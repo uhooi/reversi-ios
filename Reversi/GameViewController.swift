@@ -1,6 +1,6 @@
 import UIKit
 
-final class ViewController: UIViewController {
+final class GameViewController: UIViewController {
     
     // MARK: Stored Instance Properties
     
@@ -59,7 +59,7 @@ final class ViewController: UIViewController {
 
 // MARK: - Reversi logics
 
-extension ViewController {
+extension GameViewController {
     
     // MARK: Other Internal Methods
     
@@ -235,7 +235,7 @@ extension ViewController {
 
 // MARK: - Game management
 
-extension ViewController {
+extension GameViewController {
     
     // MARK: Other Internal Methods
 
@@ -327,7 +327,7 @@ extension ViewController {
 
 // MARK: - Views
 
-extension ViewController {
+extension GameViewController {
     
     // MARK: Other Internal Methods
 
@@ -360,7 +360,7 @@ extension ViewController {
 
 // MARK: - Inputs
 
-extension ViewController {
+extension GameViewController {
     
     // MARK: IBActions
 
@@ -409,7 +409,7 @@ extension ViewController {
 
 // MARK: - BoardViewDelegate
 
-extension ViewController: BoardViewDelegate {
+extension GameViewController: BoardViewDelegate {
     /// `boardView` の `x`, `y` で指定されるセルがタップされたときに呼ばれます。
     /// - Parameter boardView: セルをタップされた `BoardView` インスタンスです。
     /// - Parameter x: セルの列です。
@@ -427,7 +427,7 @@ extension ViewController: BoardViewDelegate {
 
 // MARK: - Save and Load
 
-extension ViewController {
+extension GameViewController {
 
     // MARK: Enums
     
@@ -528,7 +528,7 @@ extension ViewController {
 
 // MARK: - Additional types
 
-extension ViewController {
+extension GameViewController {
     
     // MARK: Enums
 
