@@ -30,10 +30,18 @@ final class GameViewController: UIViewController {
     
     // MARK: IBOutlets
     
-    @IBOutlet private var boardView: BoardView!
+    @IBOutlet private var boardView: BoardView! {
+        willSet {
+            newValue.delegate = self
+        }
+    }
     @IBOutlet private var messageDiskView: DiskView!
     @IBOutlet private var messageLabel: UILabel!
-    @IBOutlet private var messageDiskSizeConstraint: NSLayoutConstraint!
+    @IBOutlet private var messageDiskSizeConstraint: NSLayoutConstraint! {
+        willSet {
+            self.messageDiskSize = newValue.constant
+        }
+    }
     @IBOutlet private var playerControls: [UISegmentedControl]!
     @IBOutlet private var countLabels: [UILabel]!
     @IBOutlet private var playerActivityIndicators: [UIActivityIndicatorView]!
@@ -42,9 +50,6 @@ final class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        boardView.delegate = self
-        messageDiskSize = messageDiskSizeConstraint.constant
         
         do {
             try loadGame()
