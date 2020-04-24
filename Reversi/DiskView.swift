@@ -1,6 +1,6 @@
 import UIKit
 
-public class DiskView: UIView {
+public final class DiskView: UIView {
     /// このビューが表示するディスクの色を決定します。
     public var disk: Disk = .dark {
         didSet { setNeedsDisplay() }

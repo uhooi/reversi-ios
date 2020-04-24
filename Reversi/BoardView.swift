@@ -2,7 +2,7 @@ import UIKit
 
 private let lineWidth: CGFloat = 2
 
-public class BoardView: UIView {
+public final class BoardView: UIView {
     private var cellViews: [CellView] = []
     private var actions: [CellSelectionAction] = []
     
@@ -158,7 +158,7 @@ public protocol BoardViewDelegate: AnyObject {
     func boardView(_ boardView: BoardView, didSelectCellAtX x: Int, y: Int)
 }
 
-private class CellSelectionAction: NSObject {
+private final class CellSelectionAction: NSObject {
     private weak var boardView: BoardView?
     let x: Int
     let y: Int

@@ -2,7 +2,7 @@ import UIKit
 
 private let animationDuration: TimeInterval = 0.25
 
-public class CellView: UIView {
+public final class CellView: UIView {
     private let button: UIButton = UIButton()
     private let diskView: DiskView = DiskView()
     
