@@ -1,5 +1,6 @@
 protocol GameEventHandler: AnyObject {
     func viewDidLoad()
+    func viewDidAppear()
 }
 
 final class GamePresenter {
@@ -8,6 +9,8 @@ final class GamePresenter {
     
     private unowned let view: GameUserInterface
     private let router: GameRouterInput
+    
+    private var viewHasAppeared: Bool = false
     
     // MARK: Initializers
     
@@ -25,6 +28,12 @@ extension GamePresenter: GameEventHandler {
         } catch _ {
             newGame()
         }
+    }
+    
+    func viewDidAppear() {
+        if self.viewHasAppeared { return }
+        self.viewHasAppeared = true
+        self.view.waitForPlayer()
     }
     
     /// ゲームの状態を初期化し、新しいゲームを開始します。

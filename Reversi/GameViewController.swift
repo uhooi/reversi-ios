@@ -4,6 +4,7 @@ protocol GameUserInterface: AnyObject {
     func reset()
     func saveGame() throws // TODO: Presenterに移す
     func loadGame() throws // TODO: Presenterに移す
+    func waitForPlayer() // TODO: Presenterに移す
 }
 
 final class GameViewController: UIViewController {
@@ -25,7 +26,6 @@ final class GameViewController: UIViewController {
     
     private var animationCanceller: Canceller?
     private var playerCancellers: [Disk: Canceller] = [:]
-    private var viewHasAppeared: Bool = false
     
     // MARK: Computed Instance Properties
     
@@ -60,9 +60,7 @@ final class GameViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if viewHasAppeared { return }
-        viewHasAppeared = true
-        waitForPlayer()
+        self.presenter.viewDidAppear()
     }
 }
 
@@ -248,17 +246,6 @@ extension GameViewController {
     
     // MARK: Other Internal Methods
     
-    /// プレイヤーの行動を待ちます。
-    func waitForPlayer() {
-        guard let turn = self.turn else { return }
-        switch Player(rawValue: playerControls[turn.index].selectedSegmentIndex)! {
-        case .manual:
-            break
-        case .computer:
-            playTurnOfComputer()
-        }
-    }
-    
     /// プレイヤーの行動後、そのプレイヤーのターンを終了して次のターンを開始します。
     /// もし、次のプレイヤーに有効な手が存在しない場合、パスとなります。
     /// 両プレイヤーに有効な手がない場合、ゲームの勝敗を表示します。
@@ -288,7 +275,7 @@ extension GameViewController {
         } else {
             self.turn = turn
             updateMessageViews()
-            waitForPlayer()
+            waitForPlayer() // TODO: UserInterfaceのメソッドを直接呼ばない
         }
     }
     
@@ -380,7 +367,7 @@ extension GameViewController {
             }
             
             self.reset() // TODO: UserInterfaceのメソッドを直接呼ばない
-            self.waitForPlayer()
+            self.waitForPlayer() // TODO: UserInterfaceのメソッドを直接呼ばない
         })
         present(alertController, animated: true)
     }
@@ -543,6 +530,17 @@ extension GameViewController: GameUserInterface {
 
         updateMessageViews()
         updateCountLabels()
+    }
+    
+    /// プレイヤーの行動を待ちます。
+    func waitForPlayer() {
+        guard let turn = self.turn else { return }
+        switch Player(rawValue: playerControls[turn.index].selectedSegmentIndex)! {
+        case .manual:
+            break
+        case .computer:
+            playTurnOfComputer()
+        }
     }
 }
 
