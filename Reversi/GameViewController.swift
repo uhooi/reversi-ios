@@ -1,8 +1,13 @@
 import UIKit
 
+protocol GameUserInterface: AnyObject {
+}
+
 final class GameViewController: UIViewController {
     
     // MARK: Stored Instance Properties
+    
+    var presenter: GameEventHandler!
     
     /// Storyboard 上で設定されたサイズを保管します。
     /// 引き分けの際は `messageDiskView` の表示が必要ないため、
@@ -536,6 +541,11 @@ extension GameViewController {
         case manual = 0
         case computer = 1
     }
+}
+
+// MARK: - GameUserInterface
+
+extension GameViewController: GameUserInterface {
 }
 
 // MARK: - Canceller
