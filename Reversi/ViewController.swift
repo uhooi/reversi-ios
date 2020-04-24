@@ -367,7 +367,7 @@ extension ViewController {
     /// リセットボタンが押された場合に呼ばれるハンドラーです。
     /// アラートを表示して、ゲームを初期化して良いか確認し、
     /// "OK" が選択された場合ゲームを初期化します。
-    @IBAction func pressResetButton(_ sender: UIButton) {
+    @IBAction private func pressResetButton(_ sender: UIButton) {
         let alertController = UIAlertController(
             title: "Confirmation",
             message: "Do you really want to reset the game?",
@@ -392,7 +392,7 @@ extension ViewController {
     }
     
     /// プレイヤーのモードが変更された場合に呼ばれるハンドラーです。
-    @IBAction func changePlayerControlSegment(_ sender: UISegmentedControl) {
+    @IBAction private func changePlayerControlSegment(_ sender: UISegmentedControl) {
         let side: Disk = Disk(index: playerControls.firstIndex(of: sender)!)
         
         try? saveGame()
