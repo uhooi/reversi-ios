@@ -79,6 +79,9 @@
 			children = (
 				D642BDB923A9FE4500396732 /* Game.storyboard */,
 				D642BDB723A9FE4500396732 /* GameViewController.swift */,
+				D642BDDB23AA137C00396732 /* BoardView.swift */,
+				D642BDD523AA0B3900396732 /* CellView.swift */,
+				D636B39E23D35043007F370F /* DiskView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -87,18 +90,9 @@
 			isa = PBXGroup;
 			children = (
 				794F5F6524530CA60062F543 /* Views */,
+				D636B3A423D432D3007F370F /* DataTypes */,
 			);
 			name = Game;
-			sourceTree = "<group>";
-		};
-		D636B3A123D43203007F370F /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				D642BDDB23AA137C00396732 /* BoardView.swift */,
-				D642BDD523AA0B3900396732 /* CellView.swift */,
-				D636B39E23D35043007F370F /* DiskView.swift */,
-			);
-			name = Views;
 			sourceTree = "<group>";
 		};
 		D636B3A423D432D3007F370F /* DataTypes */ = {
@@ -136,8 +130,6 @@
 				D642BDBC23A9FE4700396732 /* Assets.xcassets */,
 				D642BDBE23A9FE4700396732 /* LaunchScreen.storyboard */,
 				D642BDC123A9FE4700396732 /* Info.plist */,
-				D636B3A123D43203007F370F /* Views */,
-				D636B3A423D432D3007F370F /* DataTypes */,
 			);
 			path = Reversi;
 			sourceTree = "<group>";
