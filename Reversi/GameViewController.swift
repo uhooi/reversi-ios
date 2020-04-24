@@ -1,6 +1,9 @@
 import UIKit
 
 protocol GameUserInterface: AnyObject {
+    func reset()
+    func saveGame() throws // TODO: Presenterに移す
+    func loadGame() throws // TODO: Presenterに移す
 }
 
 final class GameViewController: UIViewController {
@@ -51,11 +54,7 @@ final class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        do {
-            try loadGame()
-        } catch _ {
-            newGame()
-        }
+        self.presenter.viewDidLoad()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -248,21 +247,6 @@ extension GameViewController {
 extension GameViewController {
     
     // MARK: Other Internal Methods
-
-    /// ゲームの状態を初期化し、新しいゲームを開始します。
-    func newGame() {
-        boardView.reset()
-        turn = .dark
-        
-        for playerControl in playerControls {
-            playerControl.selectedSegmentIndex = Player.manual.rawValue
-        }
-
-        updateMessageViews()
-        updateCountLabels()
-        
-        try? saveGame()
-    }
     
     /// プレイヤーの行動を待ちます。
     func waitForPlayer() {
@@ -395,7 +379,7 @@ extension GameViewController {
                 self.playerCancellers.removeValue(forKey: side)
             }
             
-            self.newGame()
+            self.reset() // TODO: UserInterfaceのメソッドを直接呼ばない
             self.waitForPlayer()
         })
         present(alertController, animated: true)
@@ -451,8 +435,34 @@ extension GameViewController {
     private var path: String {
         (NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true).first! as NSString).appendingPathComponent("Game")
     }
+}
+
+// MARK: - Additional types
+
+extension GameViewController {
     
-    // MARK: Other Internal Methods
+    // MARK: Enums
+
+    enum Player: Int {
+        case manual = 0
+        case computer = 1
+    }
+}
+
+// MARK: - GameUserInterface
+
+extension GameViewController: GameUserInterface {
+    func reset() {
+        self.boardView.reset()
+        self.turn = .dark
+
+        for playerControl in playerControls {
+            playerControl.selectedSegmentIndex = Player.manual.rawValue
+        }
+
+        updateMessageViews()
+        updateCountLabels()
+    }
     
     /// ゲームの状態をファイルに書き出し、保存します。
     func saveGame() throws {
@@ -534,23 +544,6 @@ extension GameViewController {
         updateMessageViews()
         updateCountLabels()
     }
-}
-
-// MARK: - Additional types
-
-extension GameViewController {
-    
-    // MARK: Enums
-
-    enum Player: Int {
-        case manual = 0
-        case computer = 1
-    }
-}
-
-// MARK: - GameUserInterface
-
-extension GameViewController: GameUserInterface {
 }
 
 // MARK: - Canceller
