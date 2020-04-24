@@ -348,14 +348,11 @@ extension GameViewController {
     /// リセットボタンが押された場合に呼ばれるハンドラーです。
     /// アラートを表示して、ゲームを初期化して良いか確認し、
     /// "OK" が選択された場合ゲームを初期化します。
-    @IBAction private func pressResetButton(_ sender: UIButton) {
-        let alertController = UIAlertController(
-            title: "Confirmation",
-            message: "Do you really want to reset the game?",
-            preferredStyle: .alert
-        )
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in })
-        alertController.addAction(UIAlertAction(title: "OK", style: .default) { [weak self] _ in
+    @IBAction private func didTapResetButton(_ sender: UIButton) {
+        //        self.presenter.didTapResetButton() // TODO: 処理を委譲する
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in }
+        let okAction = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
             guard let self = self else { return }
             
             self.animationCanceller?.cancel()
@@ -368,8 +365,8 @@ extension GameViewController {
             
             self.reset() // TODO: UserInterfaceのメソッドを直接呼ばない
             self.waitForPlayer() // TODO: UserInterfaceのメソッドを直接呼ばない
-        })
-        present(alertController, animated: true)
+        }
+        showAlert(title: "Confirmation", message: "Do you really want to reset the game?", actions: [cancelAction, okAction])
     }
     
     /// プレイヤーのモードが変更された場合に呼ばれるハンドラーです。

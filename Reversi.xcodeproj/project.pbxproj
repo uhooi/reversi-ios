@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		794F5F692453100B0062F543 /* GamePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794F5F682453100B0062F543 /* GamePresenter.swift */; };
 		794F5F6D245312480062F543 /* GameRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794F5F6C245312480062F543 /* GameRouter.swift */; };
+		794F5F702453288A0062F543 /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794F5F6F2453288A0062F543 /* UIViewController+Alert.swift */; };
 		D636B39F23D35043007F370F /* DiskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D636B39E23D35043007F370F /* DiskView.swift */; };
 		D642BDB423A9FE4500396732 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D642BDB323A9FE4500396732 /* AppDelegate.swift */; };
 		D642BDB623A9FE4500396732 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D642BDB523A9FE4500396732 /* SceneDelegate.swift */; };
@@ -35,6 +36,7 @@
 /* Begin PBXFileReference section */
 		794F5F682453100B0062F543 /* GamePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePresenter.swift; sourceTree = "<group>"; };
 		794F5F6C245312480062F543 /* GameRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRouter.swift; sourceTree = "<group>"; };
+		794F5F6F2453288A0062F543 /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
 		D636B39E23D35043007F370F /* DiskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskView.swift; sourceTree = "<group>"; };
 		D642BDB023A9FE4500396732 /* Reversi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reversi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D642BDB323A9FE4500396732 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -117,6 +119,14 @@
 			name = Routers;
 			sourceTree = "<group>";
 		};
+		794F5F6E245328380062F543 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				794F5F6F2453288A0062F543 /* UIViewController+Alert.swift */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
 		D636B3A423D432D3007F370F /* DataTypes */ = {
 			isa = PBXGroup;
 			children = (
@@ -146,6 +156,7 @@
 		D642BDB223A9FE4500396732 /* Reversi */ = {
 			isa = PBXGroup;
 			children = (
+				794F5F6E245328380062F543 /* Extensions */,
 				794F5F6424530C440062F543 /* Modules */,
 				D642BDB323A9FE4500396732 /* AppDelegate.swift */,
 				D642BDB523A9FE4500396732 /* SceneDelegate.swift */,
@@ -271,6 +282,7 @@
 				D642BDD623AA0B3900396732 /* CellView.swift in Sources */,
 				D642BDD823AA0B5700396732 /* Disk.swift in Sources */,
 				794F5F6D245312480062F543 /* GameRouter.swift in Sources */,
+				794F5F702453288A0062F543 /* UIViewController+Alert.swift in Sources */,
 				D642BDB823A9FE4500396732 /* GameViewController.swift in Sources */,
 				D642BDDC23AA137C00396732 /* BoardView.swift in Sources */,
 				D642BDB423A9FE4500396732 /* AppDelegate.swift in Sources */,

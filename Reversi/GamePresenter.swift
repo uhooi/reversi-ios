@@ -1,6 +1,7 @@
 protocol GameEventHandler: AnyObject {
     func viewDidLoad()
     func viewDidAppear()
+    func didTapResetButton()
 }
 
 final class GamePresenter {
@@ -34,6 +35,10 @@ extension GamePresenter: GameEventHandler {
         if self.viewHasAppeared { return }
         self.viewHasAppeared = true
         self.view.waitForPlayer()
+    }
+    
+    func didTapResetButton() {
+        // TODO: リセットボタンタップ時の処理を委譲する
     }
     
     /// ゲームの状態を初期化し、新しいゲームを開始します。

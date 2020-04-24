@@ -152,7 +152,7 @@
                                 <rect key="frame" x="187.5" y="832" width="39" height="30"/>
                                 <state key="normal" title="Reset"/>
                                 <connections>
-                                    <action selector="pressResetButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Mad-K8-Vag"/>
+                                    <action selector="didTapResetButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Mad-K8-Vag"/>
                                 </connections>
                             </button>
                         </subviews>
