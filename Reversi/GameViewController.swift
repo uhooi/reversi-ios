@@ -153,7 +153,7 @@ extension GameViewController {
                 cleanUp()
 
                 completion?(isFinished)
-                try? self.saveGame()
+                try? self.saveGame() // TODO: UserInterfaceのメソッドを直接呼ばない
                 self.updateCountLabels()
             }
         } else {
@@ -164,7 +164,7 @@ extension GameViewController {
                     self.boardView.setDisk(disk, atX: x, y: y, animated: false)
                 }
                 completion?(true)
-                try? self.saveGame()
+                try? self.saveGame() // TODO: UserInterfaceのメソッドを直接呼ばない
                 self.updateCountLabels()
             }
         }
@@ -389,7 +389,7 @@ extension GameViewController {
     @IBAction private func changePlayerControlSegment(_ sender: UISegmentedControl) {
         let side: Disk = Disk(index: playerControls.firstIndex(of: sender)!)
         
-        try? saveGame()
+        try? saveGame() // TODO: UserInterfaceのメソッドを直接呼ばない
         
         if let canceller = playerCancellers[side] {
             canceller.cancel()
