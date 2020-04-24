@@ -1,11 +1,9 @@
 import UIKit
 
 class ViewController: UIViewController {
-    @IBOutlet private var boardView: BoardView!
     
-    @IBOutlet private var messageDiskView: DiskView!
-    @IBOutlet private var messageLabel: UILabel!
-    @IBOutlet private var messageDiskSizeConstraint: NSLayoutConstraint!
+    // MARK: Stored Instance Properties
+    
     /// Storyboard 上で設定されたサイズを保管します。
     /// 引き分けの際は `messageDiskView` の表示が必要ないため、
     /// `messageDiskSizeConstraint.constant` を `0` に設定します。
@@ -14,17 +12,28 @@ class ViewController: UIViewController {
     /// その際に `messageDiskSize` に保管された値を使います。
     private var messageDiskSize: CGFloat!
     
-    @IBOutlet private var playerControls: [UISegmentedControl]!
-    @IBOutlet private var countLabels: [UILabel]!
-    @IBOutlet private var playerActivityIndicators: [UIActivityIndicatorView]!
-    
     /// どちらの色のプレイヤーのターンかを表します。ゲーム終了時は `nil` です。
     private var turn: Disk? = .dark
     
     private var animationCanceller: Canceller?
+    private var playerCancellers: [Disk: Canceller] = [:]
+    private var viewHasAppeared: Bool = false
+    
+    // MARK: Computed Instance Properties
+    
     private var isAnimating: Bool { animationCanceller != nil }
     
-    private var playerCancellers: [Disk: Canceller] = [:]
+    // MARK: IBOutlets
+    
+    @IBOutlet private var boardView: BoardView!
+    @IBOutlet private var messageDiskView: DiskView!
+    @IBOutlet private var messageLabel: UILabel!
+    @IBOutlet private var messageDiskSizeConstraint: NSLayoutConstraint!
+    @IBOutlet private var playerControls: [UISegmentedControl]!
+    @IBOutlet private var countLabels: [UILabel]!
+    @IBOutlet private var playerActivityIndicators: [UIActivityIndicatorView]!
+    
+    // MARK: View Life-Cycle Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,8 +47,7 @@ class ViewController: UIViewController {
             newGame()
         }
     }
-    
-    private var viewHasAppeared: Bool = false
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -49,9 +57,12 @@ class ViewController: UIViewController {
     }
 }
 
-// MARK: Reversi logics
+// MARK: - Reversi logics
 
 extension ViewController {
+    
+    // MARK: Other Internal Methods
+    
     /// `side` で指定された色のディスクが盤上に置かれている枚数を返します。
     /// - Parameter side: 数えるディスクの色です。
     /// - Returns: `side` で指定された色のディスクの、盤上の枚数です。
@@ -80,48 +91,6 @@ extension ViewController {
         } else {
             return darkCount > lightCount ? .dark : .light
         }
-    }
-    
-    private func flippedDiskCoordinatesByPlacingDisk(_ disk: Disk, atX x: Int, y: Int) -> [(Int, Int)] {
-        let directions = [
-            (x: -1, y: -1),
-            (x:  0, y: -1),
-            (x:  1, y: -1),
-            (x:  1, y:  0),
-            (x:  1, y:  1),
-            (x:  0, y:  1),
-            (x: -1, y:  0),
-            (x: -1, y:  1),
-        ]
-        
-        guard boardView.diskAt(x: x, y: y) == nil else {
-            return []
-        }
-        
-        var diskCoordinates: [(Int, Int)] = []
-        
-        for direction in directions {
-            var x = x
-            var y = y
-            
-            var diskCoordinatesInLine: [(Int, Int)] = []
-            flipping: while true {
-                x += direction.x
-                y += direction.y
-                
-                switch (disk, boardView.diskAt(x: x, y: y)) { // Uses tuples to make patterns exhaustive
-                case (.dark, .some(.dark)), (.light, .some(.light)):
-                    diskCoordinates.append(contentsOf: diskCoordinatesInLine)
-                    break flipping
-                case (.dark, .some(.light)), (.light, .some(.dark)):
-                    diskCoordinatesInLine.append((x, y))
-                case (_, .none):
-                    break flipping
-                }
-            }
-        }
-        
-        return diskCoordinates
     }
     
     /// `x`, `y` で指定されたセルに、 `disk` が置けるかを調べます。
@@ -192,6 +161,50 @@ extension ViewController {
         }
     }
     
+    // MARK: Other Private Methods
+    
+    private func flippedDiskCoordinatesByPlacingDisk(_ disk: Disk, atX x: Int, y: Int) -> [(Int, Int)] {
+        let directions = [
+            (x: -1, y: -1),
+            (x:  0, y: -1),
+            (x:  1, y: -1),
+            (x:  1, y:  0),
+            (x:  1, y:  1),
+            (x:  0, y:  1),
+            (x: -1, y:  0),
+            (x: -1, y:  1),
+        ]
+        
+        guard boardView.diskAt(x: x, y: y) == nil else {
+            return []
+        }
+        
+        var diskCoordinates: [(Int, Int)] = []
+        
+        for direction in directions {
+            var x = x
+            var y = y
+            
+            var diskCoordinatesInLine: [(Int, Int)] = []
+            flipping: while true {
+                x += direction.x
+                y += direction.y
+                
+                switch (disk, boardView.diskAt(x: x, y: y)) { // Uses tuples to make patterns exhaustive
+                case (.dark, .some(.dark)), (.light, .some(.light)):
+                    diskCoordinates.append(contentsOf: diskCoordinatesInLine)
+                    break flipping
+                case (.dark, .some(.light)), (.light, .some(.dark)):
+                    diskCoordinatesInLine.append((x, y))
+                case (_, .none):
+                    break flipping
+                }
+            }
+        }
+        
+        return diskCoordinates
+    }
+    
     /// `coordinates` で指定されたセルに、アニメーションしながら順番に `disk` を置く。
     /// `coordinates` から先頭の座標を取得してそのセルに `disk` を置き、
     /// 残りの座標についてこのメソッドを再帰呼び出しすることで処理が行われる。
@@ -220,9 +233,12 @@ extension ViewController {
     }
 }
 
-// MARK: Game management
+// MARK: - Game management
 
 extension ViewController {
+    
+    // MARK: Other Internal Methods
+
     /// ゲームの状態を初期化し、新しいゲームを開始します。
     func newGame() {
         boardView.reset()
@@ -309,9 +325,12 @@ extension ViewController {
     }
 }
 
-// MARK: Views
+// MARK: - Views
 
 extension ViewController {
+    
+    // MARK: Other Internal Methods
+
     /// 各プレイヤーの獲得したディスクの枚数を表示します。
     func updateCountLabels() {
         for side in Disk.sides {
@@ -339,9 +358,12 @@ extension ViewController {
     }
 }
 
-// MARK: Inputs
+// MARK: - Inputs
 
 extension ViewController {
+    
+    // MARK: IBActions
+
     /// リセットボタンが押された場合に呼ばれるハンドラーです。
     /// アラートを表示して、ゲームを初期化して良いか確認し、
     /// "OK" が選択された場合ゲームを初期化します。
@@ -385,6 +407,8 @@ extension ViewController {
     }
 }
 
+// MARK: - BoardViewDelegate
+
 extension ViewController: BoardViewDelegate {
     /// `boardView` の `x`, `y` で指定されるセルがタップされたときに呼ばれます。
     /// - Parameter boardView: セルをタップされた `BoardView` インスタンスです。
@@ -401,12 +425,24 @@ extension ViewController: BoardViewDelegate {
     }
 }
 
-// MARK: Save and Load
+// MARK: - Save and Load
 
 extension ViewController {
+
+    // MARK: Enums
+    
+    enum FileIOError: Error {
+        case write(path: String, cause: Error?)
+        case read(path: String, cause: Error?)
+    }
+    
+    // MARK: Computed Instance Properties
+
     private var path: String {
         (NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true).first! as NSString).appendingPathComponent("Game")
     }
+    
+    // MARK: Other Internal Methods
     
     /// ゲームの状態をファイルに書き出し、保存します。
     func saveGame() throws {
@@ -488,21 +524,21 @@ extension ViewController {
         updateMessageViews()
         updateCountLabels()
     }
-    
-    enum FileIOError: Error {
-        case write(path: String, cause: Error?)
-        case read(path: String, cause: Error?)
-    }
 }
 
-// MARK: Additional types
+// MARK: - Additional types
 
 extension ViewController {
+    
+    // MARK: Enums
+
     enum Player: Int {
         case manual = 0
         case computer = 1
     }
 }
+
+// MARK: - Canceller
 
 final class Canceller {
     private(set) var isCancelled: Bool = false
@@ -519,13 +555,15 @@ final class Canceller {
     }
 }
 
+// MARK: - DiskPlacementError
+
 struct DiskPlacementError: Error {
     let disk: Disk
     let x: Int
     let y: Int
 }
 
-// MARK: File-private extensions
+// MARK: - File-private extensions
 
 extension Disk {
     init(index: Int) {
@@ -545,6 +583,8 @@ extension Disk {
         }
     }
 }
+
+// MARK: - Symbol
 
 extension Optional where Wrapped == Disk {
     fileprivate init?<S: StringProtocol>(symbol: S) {
